@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 from setuptools import find_packages, setup
@@ -18,7 +19,7 @@ setup(
     maintainer=about['__maintainer__'],
     maintainer_email=about['__maintainer_email__'],
     url='https://github.com/what-studio/tossi',
-    description='Supports Korean allomorphic particles',
+    description='Supports Korean particles',
     platforms='any',
     packages=find_packages(),
     zip_safe=False,
