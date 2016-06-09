@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
+
 from tossi import get_particle, postfix_particle as f
 from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
