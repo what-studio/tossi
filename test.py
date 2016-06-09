@@ -1,16 +1,47 @@
 # -*- coding: utf-8 -*-
 import pytest
+from six import PY2, text_type as str, with_metaclass
 
 from tossi import get_particle, postfix_particle as f
 from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
-from tossi.particles import Euro, Particle
-from tossi.tolerance import generate_tolerances, OPTIONAL_FORM2_AND_FORM1
+from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
+from tossi.tolerance import (
+    FORM1_AND_OPTIONAL_FORM2, generate_tolerances, get_tolerance,
+    get_tolerance_from_iterator, OPTIONAL_FORM2_AND_FORM1,
+    parse_tolerance_style)
 
 
 Eun = get_particle(u'은')
 Eul = get_particle(u'을')
 Gwa = get_particle(u'과')
+
+
+def test_about():
+    __import__('tossi.__about__')
+
+
+def test_particle():
+    assert str(Eun) == u'은(는)'
+    assert str(Eul) == u'을(를)'
+    assert str(Ida) == u'(이)'
+    if PY2:
+        try:
+            __import__('unidecode')
+        except ImportError:
+            assert repr(Ida) == u"<Particle: u'(\\uc774)'>"
+        else:
+            assert repr(Ida) == u'<Particle: (i)>'
+    else:
+        assert repr(Ida) == u'<Particle: (이)>'
+
+
+def test_frontend():
+    assert get_particle(u'을') is Eul
+    assert get_particle(u'를') is Eul
+    assert get_particle(u'을(를)') is Eul
+    assert get_particle(u'이다') is Ida
+    assert get_particle(u'이었다') is Ida
 
 
 def test_split_phonemes():
@@ -290,6 +321,18 @@ def test_igyuho2006():
 
 def test_tolerance_style():
     assert Gwa[u'Hello'::OPTIONAL_FORM2_AND_FORM1] == u'(와)과'
+    assert parse_tolerance_style(0) == FORM1_AND_OPTIONAL_FORM2
+    assert parse_tolerance_style(u'을(를)') == FORM1_AND_OPTIONAL_FORM2
+    assert parse_tolerance_style(u'(를)을') == OPTIONAL_FORM2_AND_FORM1
+    with pytest.raises(ValueError):
+        parse_tolerance_style(u'과')
+    with pytest.raises(ValueError):
+        parse_tolerance_style(u'이다')
+    with pytest.raises(ValueError):
+        parse_tolerance_style(u'(이)')
+    assert get_tolerance([u'예제'], OPTIONAL_FORM2_AND_FORM1) == u'예제'
+    assert get_tolerance_from_iterator(iter([u'예제']),
+                                       OPTIONAL_FORM2_AND_FORM1) == u'예제'
 
 
 def test_custom_guess_coda():
@@ -297,3 +340,13 @@ def test_custom_guess_coda():
         return None
     assert Euro.allomorph(u'밖', u'으로',
                           guess_coda=dont_guess_coda) == u'(으)로'
+
+
+def test_unmatch():
+    assert Eul[u'예제':u'는'] is None
+
+
+def test_singleton_error():
+    with pytest.raises(TypeError):
+        class Fail(with_metaclass(SingletonParticleMeta, object)):
+            pass

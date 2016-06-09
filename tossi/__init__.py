@@ -51,16 +51,13 @@ class ParticleRegistry(object):
         return self.particles[x]
 
     def get(self, form):
-        return self._get_by_match(self.pattern.match(form))
-
-    def guess(self, form):
         m = self.pattern.match(form)
         if m is None:
             return self.default
         return self._get_by_match(m)
 
     def postfix_particle(self, word, form, **kwargs):
-        particle = self.guess(form)
+        particle = self.get(form)
         return word + particle.allomorph(word, form, **kwargs)
 
 
@@ -101,11 +98,6 @@ registry = ParticleRegistry(Ida, [
 def get_particle(form):
     """Shortcut for :class:`ParticleRegistry.get` of the default registry."""
     return registry.get(form)
-
-
-def guess_particle(form):
-    """Shortcut for :class:`ParticleRegistry.guess` of the default registry."""
-    return registry.guess(form)
 
 
 def postfix_particle(word, form, **kwargs):

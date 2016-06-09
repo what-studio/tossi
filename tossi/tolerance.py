@@ -77,7 +77,7 @@ def parse_tolerance_style(style, registry=None):
     if isinstance(style, integer_types):
         return style
     if registry is None:
-        from .registry import registry
+        from . import registry
     particle = registry.get(style)
     if len(particle.tolerances) != 4:
         raise ValueError('Set tolerance style by general allomorphic particle')
