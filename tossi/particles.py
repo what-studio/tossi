@@ -110,7 +110,8 @@ class Particle(with_metaclass(CacheMeta)):
 
         """
         if isinstance(key, slice):
-            word, form = key.start, key.stop
+            word = key.start
+            form = key.stop or self.form1
             tolerance_style = key.step or TOLERANCE_STYLE
         else:
             word, form = key, self.form1

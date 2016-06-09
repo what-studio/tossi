@@ -12,9 +12,14 @@
 import re
 
 from .particles import Euro, Ida, Particle
+from .tolerance import (
+    FORM1_AND_OPTIONAL_FORM2, FORM2_AND_OPTIONAL_FORM1,
+    OPTIONAL_FORM1_AND_FORM2, OPTIONAL_FORM2_AND_FORM1, parse_tolerance_style)
 
 
-__all__ = ['ko', 'KoreanExtension']
+__all__ = ['FORM1_AND_OPTIONAL_FORM2', 'FORM2_AND_OPTIONAL_FORM1',
+           'get_particle', 'guess_particle', 'OPTIONAL_FORM1_AND_FORM2',
+           'OPTIONAL_FORM2_AND_FORM1', 'parse_tolerance_style', 'Particle']
 
 
 def index_particles(particles):
@@ -47,7 +52,7 @@ class ParticleRegistry(object):
     def get(self, form):
         return self._get_by_match(self.pattern.match(form))
 
-    def find(self, form):
+    def guess(self, form):
         m = self.pattern.match(form)
         if m is None:
             return self.default
@@ -88,11 +93,11 @@ registry = ParticleRegistry(Ida, [
 ])
 
 
-def get(form):
+def get_particle(form):
     """Shortcut for :class:`ParticleRegistry.get` of the default registry."""
     return registry.get(form)
 
 
-def find(form):
-    """Shortcut for :class:`ParticleRegistry.find` of the default registry."""
-    return registry.find(form)
+def guess_particle(form):
+    """Shortcut for :class:`ParticleRegistry.guess` of the default registry."""
+    return registry.guess(form)
