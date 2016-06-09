@@ -40,5 +40,5 @@ setup(
         'Topic :: Software Development :: Localization',
         'Topic :: Text Processing :: Linguistic',
     ],
-    install_requires=['bidict'],
+    install_requires=['bidict', 'six'],
 )
