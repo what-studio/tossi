@@ -1,10 +1,10 @@
 # 토씨
 
 [![Build Status]
-(https://img.shields.io/travis/what-studio/tossi.svg)]
+(https://travis-ci.org/what-studio/tossi.svg?branch=master)]
 (https://travis-ci.org/what-studio/tossi)
 [![Coverage Status]
-(https://img.shields.io/coveralls/what-studio/tossi.svg)]
+(https://coveralls.io/repos/github/what-studio/tossi/badge.svg?branch=master)]
 (https://coveralls.io/r/what-studio/tossi)
 
 '토씨'는 '조사'의 순우리말 이름입니다.
