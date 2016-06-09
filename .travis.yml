@@ -1,0 +1,20 @@
+language: python
+sudo: false
+python:
+- 2.7
+- 3.3
+- 3.4
+- 3.5
+- 3.5-dev
+- pypy
+- pypy3
+install:
+- pip install -e .
+- pip install flake8 flake8-import-order pytest pytest-cov coveralls
+script:
+- | # flake8
+  flake8 tossi test.py setup.py -v --show-source
+- | # pytest
+  py.test -v --cov=tossi --cov-report=term-missing
+after_success:
+- coveralls
