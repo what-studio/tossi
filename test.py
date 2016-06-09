@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from tossi import get_particle, guess_particle
+from tossi import get_particle, postfix_particle as f
 from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Particle
@@ -10,11 +10,6 @@ from tossi.tolerance import generate_tolerances, OPTIONAL_FORM2_AND_FORM1
 Eun = get_particle(u'은')
 Eul = get_particle(u'을')
 Gwa = get_particle(u'과')
-
-
-def f(word, particle_string):
-    particle = guess_particle(particle_string)
-    return word + particle[word:particle_string]
 
 
 def test_split_phonemes():
