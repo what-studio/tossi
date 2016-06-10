@@ -23,14 +23,15 @@ from .tolerance import (
 from .utils import cached_property, CacheMeta
 
 
-__all__ = ['Euro', 'Ida', 'Particle']
+__all__ = ['DEFAULT_GUESS_CODA', 'DEFAULT_TOLERANCE_STYLE',
+           'Euro', 'Ida', 'Particle']
 
 
 #: The default tolerance style.
-TOLERANCE_STYLE = FORM1_AND_OPTIONAL_FORM2
+DEFAULT_TOLERANCE_STYLE = FORM1_AND_OPTIONAL_FORM2
 
 #: The default function to guess the coda from a word.
-GUESS_CODA = guess_coda
+DEFAULT_GUESS_CODA = guess_coda
 
 
 @python_2_unicode_compatible
@@ -61,7 +62,7 @@ class Particle(with_metaclass(CacheMeta)):
         """The tuple containing all the possible tolerant forms."""
         return tuple(generate_tolerances(self.form1, self.form2))
 
-    def tolerance(self, style=TOLERANCE_STYLE):
+    def tolerance(self, style=DEFAULT_TOLERANCE_STYLE):
         """Gets a tolerant form."""
         return get_tolerance(self.tolerances, style)
 
@@ -72,8 +73,8 @@ class Particle(with_metaclass(CacheMeta)):
         else:
             return self.form2
 
-    def allomorph(self, word, form,
-                  tolerance_style=TOLERANCE_STYLE, guess_coda=GUESS_CODA):
+    def allomorph(self, word, form, tolerance_style=DEFAULT_TOLERANCE_STYLE,
+                  guess_coda=DEFAULT_GUESS_CODA):
         """Determines one of allomorphic forms based on a word.
 
         .. see also:: :meth:`allomorph`.
@@ -112,10 +113,10 @@ class Particle(with_metaclass(CacheMeta)):
         if isinstance(key, slice):
             word = key.start
             form = key.stop or self.form1
-            tolerance_style = key.step or TOLERANCE_STYLE
+            tolerance_style = key.step or DEFAULT_TOLERANCE_STYLE
         else:
             word, form = key, self.form1
-            tolerance_style = TOLERANCE_STYLE
+            tolerance_style = DEFAULT_TOLERANCE_STYLE
         return self.allomorph(word, form, tolerance_style)
 
     @cached_property
@@ -240,8 +241,8 @@ class Ida(singleton_particle(Particle)):
     #: The mapping for vowels which should be transformed by /j/ injection.
     J_INJECTIONS = bidict({u'ㅓ': u'ㅕ', u'ㅔ': u'ㅖ'})
 
-    def allomorph(self, word, form,
-                  tolerance_style=TOLERANCE_STYLE, guess_coda=GUESS_CODA):
+    def allomorph(self, word, form, tolerance_style=DEFAULT_TOLERANCE_STYLE,
+                  guess_coda=DEFAULT_GUESS_CODA):
         suffix = self.I_PATTERN.sub(u'', form)
         coda = guess_coda(word)
         next_onset, next_nucleus, next_coda = split_phonemes(suffix[0])

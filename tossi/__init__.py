@@ -10,14 +10,17 @@
 
 """
 import re
+import warnings
 
-from .particles import Euro, Ida, Particle
+from .particles import (
+    DEFAULT_GUESS_CODA, DEFAULT_TOLERANCE_STYLE, Euro, Ida, Particle)
 from .tolerance import (
     FORM1_AND_OPTIONAL_FORM2, FORM2_AND_OPTIONAL_FORM1,
     OPTIONAL_FORM1_AND_FORM2, OPTIONAL_FORM2_AND_FORM1, parse_tolerance_style)
 
 
-__all__ = ['FORM1_AND_OPTIONAL_FORM2', 'FORM2_AND_OPTIONAL_FORM1',
+__all__ = ['DEFAULT_GUESS_CODA', 'DEFAULT_TOLERANCE_STYLE',
+           'FORM1_AND_OPTIONAL_FORM2', 'FORM2_AND_OPTIONAL_FORM1',
            'get_particle', 'guess_particle', 'OPTIONAL_FORM1_AND_FORM2',
            'OPTIONAL_FORM2_AND_FORM1', 'parse_tolerance_style', 'Particle',
            'postfix_particle']
@@ -56,9 +59,13 @@ class ParticleRegistry(object):
             return self.default
         return self._get_by_match(m)
 
-    def postfix_particle(self, word, form, **kwargs):
+    def postfix(self, word, form, **kwargs):
         particle = self.get(form)
         return word + particle.allomorph(word, form, **kwargs)
+
+    def postfix_particle(self, word, form, **kwargs):
+        warnings.warn(DeprecationWarning('Use postfix() instead'))
+        return self.postfix(word, form, **kwargs)
 
 
 #: The default registry for well-known Korean particles.
@@ -104,4 +111,4 @@ def postfix_particle(word, form, **kwargs):
     """Shortcut for :class:`ParticleRegistry.postfix_particle` of the default
     registry.
     """
-    return registry.postfix_particle(word, form, **kwargs)
+    return registry.postfix(word, form, **kwargs)
