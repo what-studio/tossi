@@ -2,7 +2,7 @@
 import pytest
 from six import PY2, text_type as str, with_metaclass
 
-from tossi import get_particle, postfix_particle as f
+from tossi import get_particle, postfix_particle as f, registry
 from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
@@ -350,3 +350,7 @@ def test_singleton_error():
     with pytest.raises(TypeError):
         class Fail(with_metaclass(SingletonParticleMeta, object)):
             pass
+
+
+def test_deprecations():
+    pytest.deprecated_call(registry.postfix_particle, u'테스트', u'으로부터')
