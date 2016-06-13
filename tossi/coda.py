@@ -21,7 +21,8 @@ import unicodedata
 from .hangul import split_phonemes
 
 
-__all__ = ['filter_only_significant', 'guess_coda', 'pick_coda_from_decimal',
+__all__ = ['filter_only_significant', 'guess_coda',
+           'guess_coda_from_significant_word', 'pick_coda_from_decimal',
            'pick_coda_from_letter']
 
 
@@ -34,6 +35,10 @@ def guess_coda(word):
     to guess the coda, returns ``None``.
     """
     word = filter_only_significant(word)
+    return guess_coda_from_significant_word(word)
+
+
+def guess_coda_from_significant_word(word):
     if not word:
         return None
     decimal_m = DECIMAL_PATTERN.search(word)
