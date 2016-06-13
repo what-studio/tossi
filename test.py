@@ -7,8 +7,8 @@ from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
 from tossi.tolerance import (
-    FORM1_AND_OPTIONAL_FORM2, generate_tolerances, get_tolerance,
-    get_tolerance_from_iterator, OPTIONAL_FORM2_AND_FORM1,
+    generate_tolerances, get_tolerance, get_tolerance_from_iterator,
+    MORPH1_AND_OPTIONAL_MORPH2, OPTIONAL_MORPH2_AND_MORPH1,
     parse_tolerance_style)
 
 
@@ -265,7 +265,7 @@ def test_combine():
 def test_tolerances_for_coda_combination():
     assert Euro[u'Hello':u'론'] == u'(으)론'
     assert Gwa[u'Hello':u'완'] == u'관(완)'
-    assert Gwa[u'Hello':u'완':OPTIONAL_FORM2_AND_FORM1] == u'(완)관'
+    assert Gwa[u'Hello':u'완':OPTIONAL_MORPH2_AND_MORPH1] == u'(완)관'
     assert Gwa[u'Hello':u'완완완'] == u'관(완)완완'
     assert Particle(u'크', u'')[u'Hello':u'큰큰'] == u'(큰)큰'
 
@@ -320,19 +320,19 @@ def test_igyuho2006():
 
 
 def test_tolerance_style():
-    assert Gwa[u'Hello'::OPTIONAL_FORM2_AND_FORM1] == u'(와)과'
-    assert parse_tolerance_style(0) == FORM1_AND_OPTIONAL_FORM2
-    assert parse_tolerance_style(u'을(를)') == FORM1_AND_OPTIONAL_FORM2
-    assert parse_tolerance_style(u'(를)을') == OPTIONAL_FORM2_AND_FORM1
+    assert Gwa[u'Hello'::OPTIONAL_MORPH2_AND_MORPH1] == u'(와)과'
+    assert parse_tolerance_style(0) == MORPH1_AND_OPTIONAL_MORPH2
+    assert parse_tolerance_style(u'을(를)') == MORPH1_AND_OPTIONAL_MORPH2
+    assert parse_tolerance_style(u'(를)을') == OPTIONAL_MORPH2_AND_MORPH1
     with pytest.raises(ValueError):
         parse_tolerance_style(u'과')
     with pytest.raises(ValueError):
         parse_tolerance_style(u'이다')
     with pytest.raises(ValueError):
         parse_tolerance_style(u'(이)')
-    assert get_tolerance([u'예제'], OPTIONAL_FORM2_AND_FORM1) == u'예제'
+    assert get_tolerance([u'예제'], OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
     assert get_tolerance_from_iterator(iter([u'예제']),
-                                       OPTIONAL_FORM2_AND_FORM1) == u'예제'
+                                       OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
 
 
 def test_custom_guess_coda():

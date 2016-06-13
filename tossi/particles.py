@@ -18,8 +18,8 @@ from six import PY2, python_2_unicode_compatible, with_metaclass
 from .coda import guess_coda, pick_coda_from_letter
 from .hangul import combine_words, is_consonant, join_phonemes, split_phonemes
 from .tolerance import (
-    FORM1_AND_OPTIONAL_FORM2, generate_tolerances, get_tolerance,
-    get_tolerance_from_iterator)
+    generate_tolerances, get_tolerance, get_tolerance_from_iterator,
+    MORPH1_AND_OPTIONAL_MORPH2)
 from .utils import cached_property, CacheMeta
 
 
@@ -28,7 +28,7 @@ __all__ = ['DEFAULT_GUESS_CODA', 'DEFAULT_TOLERANCE_STYLE',
 
 
 #: The default tolerance style.
-DEFAULT_TOLERANCE_STYLE = FORM1_AND_OPTIONAL_FORM2
+DEFAULT_TOLERANCE_STYLE = MORPH1_AND_OPTIONAL_MORPH2
 
 #: The default function to guess the coda from a word.
 DEFAULT_GUESS_CODA = guess_coda
@@ -41,68 +41,68 @@ class Particle(with_metaclass(CacheMeta)):
     This also implements the general allomorphic rule for most common
     particles.
 
-    :param form1: an allomorph after a consonant.
-    :param form2: an allomorph after a vowel.  If it is omitted, there's no
-                  no alternative allomorph.  So `form1` always will be
+    :param morph1: an allomorph after a consonant.
+    :param morph2: an allomorph after a vowel.  If it is omitted, there's no
+                  no alternative allomorph.  So `morph1` always will be
                   selected.
     :param final: whether the particle disallows combination with another
                   postpositions.  (default: ``False``)
 
     """
 
-    __slots__ = ('form1', 'form2', 'final')
+    __slots__ = ('morph1', 'morph2', 'final')
 
-    def __init__(self, form1, form2=None, final=False):
-        self.form1 = form1
-        self.form2 = form1 if form2 is None else form2
+    def __init__(self, morph1, morph2=None, final=False):
+        self.morph1 = morph1
+        self.morph2 = morph1 if morph2 is None else morph2
         self.final = final
 
     @cached_property
     def tolerances(self):
-        """The tuple containing all the possible tolerant forms."""
-        return tuple(generate_tolerances(self.form1, self.form2))
+        """The tuple containing all the possible tolerant morphs."""
+        return tuple(generate_tolerances(self.morph1, self.morph2))
 
     def tolerance(self, style=DEFAULT_TOLERANCE_STYLE):
-        """Gets a tolerant form."""
+        """Gets a tolerant morph."""
         return get_tolerance(self.tolerances, style)
 
     def rule(self, coda):
-        """Determines one of allomorphic forms based on a coda."""
+        """Determines one of allomorphic morphs based on a coda."""
         if coda:
-            return self.form1
+            return self.morph1
         else:
-            return self.form2
+            return self.morph2
 
-    def allomorph(self, word, form, tolerance_style=DEFAULT_TOLERANCE_STYLE,
+    def allomorph(self, word, morph, tolerance_style=DEFAULT_TOLERANCE_STYLE,
                   guess_coda=DEFAULT_GUESS_CODA):
-        """Determines one of allomorphic forms based on a word.
+        """Determines one of allomorphic morphs based on a word.
 
         .. see also:: :meth:`allomorph`.
 
         """
-        suffix = self.match(form)
+        suffix = self.match(morph)
         if suffix is None:
             return None
         coda = guess_coda(word)
         if coda is not None:
             # Coda guessed successfully.
-            form = self.rule(coda)
+            morph = self.rule(coda)
         elif not suffix or not is_consonant(suffix[0]):
-            # Choose the tolerant form.
-            form = self.tolerance(tolerance_style)
+            # Choose the tolerant morph.
+            morph = self.tolerance(tolerance_style)
         else:
-            # Suffix starts with a consonant.  Generate a new tolerant form
-            # by combined forms.
-            form1 = (combine_words(self.form1, suffix)
-                     if self.form1 else suffix[1:])
-            form2 = (combine_words(self.form2, suffix)
-                     if self.form2 else suffix[1:])
-            tolerances = generate_tolerances(form1, form2)
+            # Suffix starts with a consonant.  Generate a new tolerant morph
+            # by combined morphs.
+            morph1 = (combine_words(self.morph1, suffix)
+                      if self.morph1 else suffix[1:])
+            morph2 = (combine_words(self.morph2, suffix)
+                      if self.morph2 else suffix[1:])
+            tolerances = generate_tolerances(morph1, morph2)
             return get_tolerance_from_iterator(tolerances, tolerance_style)
-        return combine_words(form, suffix)
+        return combine_words(morph, suffix)
 
     def __getitem__(self, key):
-        """The syntax sugar to determine one of allomorphic forms based on a
+        """The syntax sugar to determine one of allomorphic morphs based on a
         word::
 
            eun = Particle(u'은', u'는')
@@ -112,53 +112,53 @@ class Particle(with_metaclass(CacheMeta)):
         """
         if isinstance(key, slice):
             word = key.start
-            form = key.stop or self.form1
+            morph = key.stop or self.morph1
             tolerance_style = key.step or DEFAULT_TOLERANCE_STYLE
         else:
-            word, form = key, self.form1
+            word, morph = key, self.morph1
             tolerance_style = DEFAULT_TOLERANCE_STYLE
-        return self.allomorph(word, form, tolerance_style)
+        return self.allomorph(word, morph, tolerance_style)
 
     @cached_property
     def regex(self):
         return re.compile(self.regex_pattern())
 
     @cached_property
-    def forms(self):
-        """The tuple containing the given forms and all the possible tolerant
-        forms.  Longer is first.
+    def morphs(self):
+        """The tuple containing the given morphs and all the possible tolerant
+        morphs.  Longer is first.
         """
         seen = set()
         saw = seen.add
-        forms = chain([self.form1, self.form2], self.tolerances)
-        unique_forms = (x for x in forms if x and not (x in seen or saw(x)))
-        return tuple(sorted(unique_forms, key=len, reverse=True))
+        morphs = chain([self.morph1, self.morph2], self.tolerances)
+        unique_morphs = (x for x in morphs if x and not (x in seen or saw(x)))
+        return tuple(sorted(unique_morphs, key=len, reverse=True))
 
-    def match(self, form):
-        m = self.regex.match(form)
+    def match(self, morph):
+        m = self.regex.match(morph)
         if m is None:
             return None
         x = m.end()
-        if self.final or m.group() == self.forms[m.lastindex - 1]:
-            return form[x:]
-        coda = pick_coda_from_letter(form[x - 1])
-        return coda + form[x:]
+        if self.final or m.group() == self.morphs[m.lastindex - 1]:
+            return morph[x:]
+        coda = pick_coda_from_letter(morph[x - 1])
+        return coda + morph[x:]
 
     def regex_pattern(self):
         if self.final:
-            return u'^(?:%s)$' % u'|'.join(re.escape(f) for f in self.forms)
+            return u'^(?:%s)$' % u'|'.join(re.escape(f) for f in self.morphs)
         patterns = []
-        for form in self.forms:
+        for morph in self.morphs:
             try:
-                onset, nucleus, coda = split_phonemes(form[-1])
+                onset, nucleus, coda = split_phonemes(morph[-1])
             except ValueError:
                 coda = None
             if coda == u'':
-                start = form[-1]
+                start = morph[-1]
                 end = join_phonemes(onset, nucleus, u'ㅎ')
-                pattern = re.escape(form[:-1]) + u'[%s-%s]' % (start, end)
+                pattern = re.escape(morph[:-1]) + u'[%s-%s]' % (start, end)
             else:
-                pattern = re.escape(form)
+                pattern = re.escape(morph)
             patterns.append(pattern)
         return u'^(?:%s)' % u'|'.join(u'(%s)' % p for p in patterns)
 
@@ -192,7 +192,7 @@ class SingletonParticleMeta(type(Particle)):
 class SingletonParticle(Particle):
 
     # Concrete classes should set these strings.
-    form1 = form2 = final = NotImplemented
+    morph1 = morph2 = final = NotImplemented
 
     def __init__(self):
         pass
@@ -213,15 +213,15 @@ class Euro(singleton_particle(Particle)):
 
     __slots__ = ()
 
-    form1 = u'으로'
-    form2 = u'로'
+    morph1 = u'으로'
+    morph2 = u'로'
     final = False
 
     def rule(self, coda):
         if coda and coda != u'ㄹ':
-            return self.form1
+            return self.morph1
         else:
-            return self.form2
+            return self.morph2
 
 
 class Ida(singleton_particle(Particle)):
@@ -231,24 +231,24 @@ class Ida(singleton_particle(Particle)):
 
     __slots__ = ()
 
-    form1 = u'이'
-    form2 = u''
+    morph1 = u'이'
+    morph2 = u''
     final = False
 
-    #: Matches with initial "이" or "(이)" to normalize fusioned verbal forms.
+    #: Matches with initial "이" or "(이)" to normalize fusioned verbal morphs.
     I_PATTERN = re.compile(u'^이|\(이\)')
 
-    #: The mapping for vowels which should be transformed by /j/ injection.
+    #: The mapping for vowels which should be transmorphed by /j/ injection.
     J_INJECTIONS = bidict({u'ㅓ': u'ㅕ', u'ㅔ': u'ㅖ'})
 
-    def allomorph(self, word, form, tolerance_style=DEFAULT_TOLERANCE_STYLE,
+    def allomorph(self, word, morph, tolerance_style=DEFAULT_TOLERANCE_STYLE,
                   guess_coda=DEFAULT_GUESS_CODA):
-        suffix = self.I_PATTERN.sub(u'', form)
+        suffix = self.I_PATTERN.sub(u'', morph)
         coda = guess_coda(word)
         next_onset, next_nucleus, next_coda = split_phonemes(suffix[0])
         if next_onset == u'ㅇ':
             if next_nucleus == u'ㅣ':
-                # No allomorphs when a form starts with "이" and has a coda.
+                # No allomorphs when a morph starts with "이" and has a coda.
                 return suffix
             mapping = None
             if coda == u'' and next_nucleus in self.J_INJECTIONS:
@@ -264,7 +264,7 @@ class Ida(singleton_particle(Particle)):
                 next_letter = join_phonemes(u'ㅇ', next_nucleus, next_coda)
                 suffix = next_letter + suffix[1:]
         if coda is None:
-            form = self.tolerance(tolerance_style)
+            morph = self.tolerance(tolerance_style)
         else:
-            form = self.rule(coda)
-        return form + suffix
+            morph = self.rule(coda)
+        return morph + suffix
