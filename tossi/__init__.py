@@ -12,18 +12,18 @@
 import re
 import warnings
 
-from .particles import (
-    DEFAULT_GUESS_CODA, DEFAULT_TOLERANCE_STYLE, Euro, Ida, Particle)
+from .coda import guess_coda
+from .particles import Euro, Ida, Particle
 from .tolerance import (
     MORPH1_AND_OPTIONAL_MORPH2, MORPH2_AND_OPTIONAL_MORPH1,
     OPTIONAL_MORPH1_AND_MORPH2, OPTIONAL_MORPH2_AND_MORPH1,
     parse_tolerance_style)
 
 
-__all__ = ['DEFAULT_GUESS_CODA', 'DEFAULT_TOLERANCE_STYLE', 'get_particle',
-           'MORPH1_AND_OPTIONAL_MORPH2', 'MORPH2_AND_OPTIONAL_MORPH1',
-           'OPTIONAL_MORPH1_AND_MORPH2', 'OPTIONAL_MORPH2_AND_MORPH1',
-           'parse_tolerance_style', 'Particle', 'postfix_particle']
+__all__ = ['get_particle', 'guess_coda', 'MORPH1_AND_OPTIONAL_MORPH2',
+           'MORPH2_AND_OPTIONAL_MORPH1', 'OPTIONAL_MORPH1_AND_MORPH2',
+           'OPTIONAL_MORPH2_AND_MORPH1', 'parse_tolerance_style', 'Particle',
+           'postfix_particle']
 
 
 def index_particles(particles):
