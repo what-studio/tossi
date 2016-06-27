@@ -118,6 +118,7 @@ def test_exceptions():
 
 def test_insignificant():
     assert f(u'나오(Lv.25)', u'으로') == u'나오(Lv.25)로'
+    assert f(u'나오 (Lv.25)', u'을') == u'나오 (Lv.25)를'
     assert f(u'나(?)오', u'으로') == u'나(?)오로'
     assert f(u'헬로월드!', u'으로') == u'헬로월드!로'
     assert f(u'?_?', u'으로') == u'?_?(으)로'
