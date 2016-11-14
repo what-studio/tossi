@@ -136,6 +136,11 @@ def test_insignificant():
     assert f(u'검색\ue000', u'를') == u'검색\ue000을'
 
 
+def test_only_parentheses():
+    assert f(u'(1, 2)', u'를') == u'(1, 2)를'
+    assert f(u'(2, 3)', u'를') == u'(2, 3)을'
+
+
 def test_vocative_particles():
     assert f(u'친구', u'야') == u'친구야'
     assert f(u'사랑', u'야') == u'사랑아'

@@ -65,6 +65,9 @@ def filter_only_significant(word):
     """
     if not word:
         return word
+    # Unwrap a complete parenthesis.
+    if word.startswith(u'(') and word.endswith(u')'):
+        return filter_only_significant(word[1:-1])
     x = len(word)
     while x > 0:
         x -= 1
