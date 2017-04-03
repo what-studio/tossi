@@ -8,8 +8,8 @@ from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
 from tossi.tolerance import (
     generate_tolerances, get_tolerance, get_tolerance_from_iterator,
-    MORPH1_AND_OPTIONAL_MORPH2, OPTIONAL_MORPH2_AND_MORPH1, MORPH1_ONLY, MORPH2_ONLY,
-    parse_tolerance_style)
+    MORPH1_AND_OPTIONAL_MORPH2, MORPH1_ONLY, MORPH2_ONLY,
+    OPTIONAL_MORPH2_AND_MORPH1, parse_tolerance_style)
 
 
 Eun = get_particle(u'은')
@@ -333,6 +333,7 @@ def test_tolerance_style():
     assert parse_tolerance_style(u'을(를)') == MORPH1_AND_OPTIONAL_MORPH2
     assert parse_tolerance_style(u'(를)을') == OPTIONAL_MORPH2_AND_MORPH1
     assert parse_tolerance_style(u'과') == MORPH1_ONLY
+    assert parse_tolerance_style(u'로') == MORPH2_ONLY
     with pytest.raises(ValueError):
         parse_tolerance_style(u'이다')
     parse_tolerance_style(u'(이)') == MORPH1_AND_OPTIONAL_MORPH2
