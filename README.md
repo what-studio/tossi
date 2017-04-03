@@ -1,11 +1,11 @@
 # 토씨
 
-[![Build Status]
-(https://travis-ci.org/what-studio/tossi.svg?branch=master)]
-(https://travis-ci.org/what-studio/tossi)
-[![Coverage Status]
-(https://coveralls.io/repos/github/what-studio/tossi/badge.svg?branch=master)]
-(https://coveralls.io/r/what-studio/tossi)
+[![Build Status](
+  https://travis-ci.org/what-studio/tossi.svg?branch=master
+)](https://travis-ci.org/what-studio/tossi)
+[![Coverage Status](
+  https://coveralls.io/repos/github/what-studio/tossi/badge.svg?branch=master
+)](https://coveralls.io/r/what-studio/tossi)
 
 '토씨'는 '조사'의 순우리말 이름입니다. 토씨 라이브러리는 임의의 단어 뒤에 올
 가장 자연스러운 한국어 조사 형태를 골라줍니다.
