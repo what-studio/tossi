@@ -336,6 +336,8 @@ def test_tolerance_style():
     assert parse_tolerance_style(u'로') == MORPH2_ONLY
     with pytest.raises(ValueError):
         parse_tolerance_style(u'이다')
+    with pytest.raises(ValueError):
+        parse_tolerance_style(u'만')
     parse_tolerance_style(u'(이)') == MORPH1_AND_OPTIONAL_MORPH2
     assert get_tolerance([u'예제'], OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
     assert get_tolerance_from_iterator(iter([u'예제']),
