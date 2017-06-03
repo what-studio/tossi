@@ -8,8 +8,8 @@
 )](https://coveralls.io/r/what-studio/tossi)
 
 "Tossi(토씨)" is a pure-Korean name for grammatical particles.  Some of Korean
-particles has allomorphic variant depending on a leading word.  The Tossi
-library determines most natrual allomorphic variant.
+particles has allomorphic variant forms depending on a leading word.  The Tossi
+library determines most natrual form.
 
 ## Installation
 
@@ -31,30 +31,32 @@ $ pip install tossi
 민주공화국이다
 ```
 
-## Natural Allomorphic Variant for Particles
+## Natural Form for Particles
 
-`의`, `도`, `만~`, `에~`, `께~`, `뿐~`, `하~`, `보다~`, `밖에~`, `같이~`,
-`부터~`, `까지~`, `마저~`, `조차~`, `마냥~`, `처럼~`, `커녕~`에는 어떤 단어가
-앞서도 형태가 변하지 않습니다:
+These particles do not have allomorphic variant.  They always appear in same
+form: `의`, `도`, `만~`, `에~`, `께~`, `뿐~`, `하~`, `보다~`, `밖에~`, `같이~`,
+`부터~`, `까지~`, `마저~`, `조차~`, `마냥~`, `처럼~`, and `커녕~`:
 
 > 나오**의**, 모리안**의**, 키홀**의**, 나오**도**, 모리안**도**, 키홀**도**
 
-반면 `은(는)`, `이(가)`, `을(를)`, `과(와)~`는 앞선 단어의 마지막 음절의 받침
-유무에 따라 형태가 달라집니다:
+Meanwhile, these particles appear in different form depending on whether the
+leading word have a final consonant or not: `은(는)`, `이(가)`, `을(를)`, and
+`과(와)~`:
 
 > 나오**는**, 모리안**은**, 키홀**은**
 
-`(으)로~`도 비슷한 규칙을 따르지만 앞선 받침이 `ㄹ`일 경우엔 받침이 없는 것과
-같게 취급합니다:
+`(으)로~` also have similar rule but if the final consonant is `ㄹ`, it appears
+same with after non final consonant:
 
 > 나오**로**, 모리안**으로**, 키홀**로**
 
-서술격 조사 `(이)다`는 어미가 활용되어 다양한 형태로 변형될 수 있습니다:
+`(이)다` which is a predicative particle have more diverse forms.  Its end can
+be inflected in general:
 
 > 나오**지만**, 모리안**이지만**, 키홀**이에요**, 나오**예요**
 
-토씨는 가장 자연스러운 조사 형태를 선택합니다.  만약 어떤 형태가 자연스러운지
-알 수 없을 때에는 `은(는)`, `(으)로`처럼 모든 형태를 병기합니다:
+Tossi tries to determine most natrual form for particles.  But if it fails to
+do, determines both forms like `은(는)` or `(으)로`:
 
 ```python
 >>> tossi.postfix_particle(u'벽돌', u'으로')
@@ -65,7 +67,7 @@ $ pip install tossi
 黃金(으)로
 ```
 
-단어가 숫자로 끝나더라도 자연스러운 조사 형태가 선택됩니다:
+If the leading word ends with number, a natural form can be determined:
 
 ```python
 >>> tossi.postfix_particle(u'레벨 10', u'이')
@@ -74,7 +76,7 @@ $ pip install tossi
 레벨 999가
 ```
 
-괄호 속 단어나 구두점은 조사 형태를 선택할 때 참고하지 않습니다:
+Words in a parentheses are ignored:
 
 ```python
 >>> tossi.postfix_particle(u'나뭇가지(만렙)', u'을')
