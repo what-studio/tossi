@@ -1,4 +1,4 @@
-# 토씨
+# Tossi
 
 [![Build Status](
   https://travis-ci.org/what-studio/tossi.svg?branch=master
@@ -7,16 +7,17 @@
   https://coveralls.io/repos/github/what-studio/tossi/badge.svg?branch=master
 )](https://coveralls.io/r/what-studio/tossi)
 
-'토씨'는 '조사'의 순우리말 이름입니다. 토씨 라이브러리는 임의의 단어 뒤에 올
-가장 자연스러운 한국어 조사 형태를 골라줍니다.
+"Tossi(토씨)" is a pure-Korean name for grammatical particles.  Some of Korean
+particles has allomorphic variant depending on a leading word.  The Tossi
+library determines most natrual allomorphic variant.
 
-## 설치
+## Installation
 
 ```console
 $ pip install tossi
 ```
 
-## 사용법
+## Usage
 
 ```python
 >>> import tossi
@@ -30,7 +31,7 @@ $ pip install tossi
 민주공화국이다
 ```
 
-## 자연스러운 조사 선택
+## Natural Allomorphic Variant for Particles
 
 `의`, `도`, `만~`, `에~`, `께~`, `뿐~`, `하~`, `보다~`, `밖에~`, `같이~`,
 `부터~`, `까지~`, `마저~`, `조차~`, `마냥~`, `처럼~`, `커녕~`에는 어떤 단어가
