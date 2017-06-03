@@ -12,7 +12,7 @@
 
 "Tossi(토씨)" is a pure-Korean name for grammatical particles.  Some of Korean
 particles has allomorphic variant forms depending on a leading word.  The Tossi
-library determines most natrual form.
+library determines most natural form.
 
 ## Installation
 
@@ -58,7 +58,7 @@ be inflected in general:
 
 > 나오**지만**, 모리안**이지만**, 키홀**이에요**, 나오**예요**
 
-Tossi tries to determine most natrual form for particles.  But if it fails to
+Tossi tries to determine most natural form for particles.  But if it fails to
 do, determines both forms like `은(는)` or `(으)로` for tolerance:
 
 ```python
