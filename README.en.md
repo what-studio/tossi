@@ -6,6 +6,9 @@
 [![Coverage Status](
   https://coveralls.io/repos/github/what-studio/tossi/badge.svg?branch=master
 )](https://coveralls.io/r/what-studio/tossi)
+[![README in English](
+  https://img.shields.io/badge/readme-korean-blue.svg?style=flat
+)](README.en.md)
 
 "Tossi(토씨)" is a pure-Korean name for grammatical particles.  Some of Korean
 particles has allomorphic variant forms depending on a leading word.  The Tossi
