@@ -56,7 +56,7 @@ be inflected in general:
 > 나오**지만**, 모리안**이지만**, 키홀**이에요**, 나오**예요**
 
 Tossi tries to determine most natrual form for particles.  But if it fails to
-do, determines both forms like `은(는)` or `(으)로`:
+do, determines both forms like `은(는)` or `(으)로` for tolerance:
 
 ```python
 >>> tossi.postfix_particle(u'벽돌', u'으로')
@@ -83,11 +83,12 @@ Words in a parentheses are ignored:
 나뭇가지(만렙)를
 ```
 
-## 병기 순서
+## Tolerance Styles
 
-조사의 형태를 모두 병기해야할 때 병기할 순서를 고를 수 있습니다. 가령 대부분의
-인자가 일본어 단어일 경우엔 단어가 모음으로 끝날 확률이 높습니다. 이 경우
-기본형인 `은(는)` 스타일보단 `는(은)` 스타일이 더 자연스러울 수 있습니다:
+When Tossi can't determine the natural form, the result includes the both
+forms.  In this case, you can choose the order of the forms.  For example, if
+the most words are Japanese, they probably will not end with final consonants.
+Therefore `는(은)` is better than `은(는)` which is the default style:
 
 ```python
 >>> tolerance_style = tossi.parse_tolerance_style(u'는(은)')
@@ -95,14 +96,13 @@ Words in a parentheses are ignored:
 さくら가(이)
 ```
 
-`은(는)`, `(은)는`, `는(은)`, `(는)은` 네 가지 스타일 중 프로젝트에 맞는 것을
-고르세요.
+Choose one of `은(는)`, `(은)는`, `는(은)`, `(는)은` for your project.
 
-## 만든이와 사용권
+## Licensing
 
-[넥슨][nexon] [왓 스튜디오][what-studio]의 [이흥섭][sublee]과
-[김찬웅][kexplo]이 만들었고 [제3조항을 포함하는 BSD 허가서][bsd-3-clause]를
-채택했습니다.
+Written by [Heungsub Lee][sublee] and [Chanwoong Kim][kexplo] at
+[What! Studio][what-studio] in [Nexon][nexon], and distributed under
+[the BSD 3-Clause license][bsd-3-clause].
 
 [nexon]: http://nexon.com/
 [what-studio]: https://github.com/what-studio
