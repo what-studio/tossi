@@ -13,7 +13,7 @@ from itertools import chain
 import re
 
 from bidict import bidict
-from six import PY2, python_2_unicode_compatible, with_metaclass
+from six import PY2, python_2_unicode_compatible, text_type, with_metaclass
 
 from .coda import guess_coda, pick_coda_from_letter
 from .hangul import combine_words, is_consonant, join_phonemes, split_phonemes
@@ -87,6 +87,9 @@ class Particle(with_metaclass(CacheMeta)):
         if coda is not None:
             # Coda guessed successfully.
             morph = self.rule(coda)
+        elif isinstance(tolerance_style, text_type):
+            # User specified the style themselves
+            morph = tolerance_style
         elif not suffix or not is_consonant(suffix[0]):
             # Choose the tolerant morph.
             morph = self.tolerance(tolerance_style)
