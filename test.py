@@ -345,7 +345,7 @@ def test_tolerance_styles():
     assert f(u'Tossi', u'이다', tolerance_style=MORPH1_ONLY) == u'Tossi이다'
     assert f(u'Tossi', u'이다', tolerance_style=MORPH2_ONLY) == u'Tossi다'
     assert f(u'Tossi', u'였다', tolerance_style=MORPH1_ONLY) == u'Tossi이었다'
-    # assert f(u'Tossi', u'였다', tolerance_style=MORPH2_ONLY) == u'Tossi였다'
+    assert f(u'Tossi', u'였다', tolerance_style=MORPH2_ONLY) == u'Tossi였다'
 
 
 def test_static_tolerance_style():
