@@ -17,12 +17,12 @@ __all__ = ['generate_tolerances', 'get_tolerance',
 
 
 # Tolerance styles:
-MORPH1_AND_OPTIONAL_MORPH2 = 0  # 은(는), (으)로, (이)
-OPTIONAL_MORPH1_AND_MORPH2 = 1  # (은)는, (으)로, (이)
-MORPH2_AND_OPTIONAL_MORPH1 = 2  # 는(은), (으)로, (이)
-OPTIONAL_MORPH2_AND_MORPH1 = 3  # (는)은, (으)로, (이)
-MORPH1_ONLY = 4  # with optional morph: 은, 으로, 이
-MORPH2_ONLY = 5  # without optional morph: 는, 로, ''
+MORPH1_AND_OPTIONAL_MORPH2 = 0  # 은(는), (으)로, (이)다
+OPTIONAL_MORPH1_AND_MORPH2 = 1  # (은)는, (으)로, (이)다
+MORPH2_AND_OPTIONAL_MORPH1 = 2  # 는(은), (으)로, (이)다
+OPTIONAL_MORPH2_AND_MORPH1 = 3  # (는)은, (으)로, (이)다
+MORPH1_ONLY = 4  # 은, 으로, 이다
+MORPH2_ONLY = 5  # 는, 로, 다
 
 
 def generate_tolerances(morph1, morph2):
