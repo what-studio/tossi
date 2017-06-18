@@ -29,9 +29,9 @@ def generate_tolerances(morph1, morph2):
     """Generates all reasonable tolerant particle morphs::
 
     >>> set(generate_tolerances(u'이', u'가'))
-    set([u'이(가)', u'(이)가', u'가(이)', u'(가)이'])
+    set([u'이(가)', u'(이)가', u'가(이)', u'(가)이', u'이', u'가'])
     >>> set(generate_tolerances(u'이면', u'면'))
-    set([u'(이)면'])
+    set([u'(이)면', u'면', u'이면'])
 
     """
     if morph1 == morph2:
@@ -39,8 +39,11 @@ def generate_tolerances(morph1, morph2):
         return
     if not (morph1 and morph2):
         # Null allomorph exists.
-        for i in range(4):
-            yield u'(%s)' % (morph1 or morph2)
+        tolerance = u'(%s)' % (morph1 or morph2)
+        yield tolerance
+        yield tolerance
+        yield tolerance
+        yield tolerance
         yield u'%s' % (morph1 or morph2)
         yield u''
         return
@@ -49,8 +52,11 @@ def generate_tolerances(morph1, morph2):
         longer, shorter = (morph1, morph2) if len1 > len2 else (morph2, morph1)
         if longer.endswith(shorter):
             # Longer morph ends with shorter morph.
-            for i in range(4):
-                yield u'(%s)%s' % (longer[:-len(shorter)], shorter)
+            tolerance = u'(%s)%s' % (longer[:-len(shorter)], shorter)
+            yield tolerance
+            yield tolerance
+            yield tolerance
+            yield tolerance
             yield u'%s' % longer
             yield u'%s' % shorter
             return
