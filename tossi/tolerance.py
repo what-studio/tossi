@@ -17,10 +17,12 @@ __all__ = ['generate_tolerances', 'get_tolerance',
 
 
 # Tolerance styles:
-MORPH1_AND_OPTIONAL_MORPH2 = 0  # 은(는)
-OPTIONAL_MORPH1_AND_MORPH2 = 1  # (은)는
-MORPH2_AND_OPTIONAL_MORPH1 = 2  # 는(은)
-OPTIONAL_MORPH2_AND_MORPH1 = 3  # (는)은
+MORPH1_AND_OPTIONAL_MORPH2 = 0  # 은(는), (으)로, (이)
+OPTIONAL_MORPH1_AND_MORPH2 = 1  # (은)는, (으)로, (이)
+MORPH2_AND_OPTIONAL_MORPH1 = 2  # 는(은), (으)로, (이)
+OPTIONAL_MORPH2_AND_MORPH1 = 3  # (는)은, (으)로, (이)
+MORPH1_ONLY = 4  # with optional morph: 은, 으로, 이
+MORPH2_ONLY = 5  # without optional morph: 는, 로, ''
 
 
 def generate_tolerances(morph1, morph2):
@@ -37,14 +39,20 @@ def generate_tolerances(morph1, morph2):
         return
     if not (morph1 and morph2):
         # Null allomorph exists.
-        yield u'(%s)' % (morph1 or morph2)
+        for i in range(4):
+            yield u'(%s)' % (morph1 or morph2)
+        yield u'%s' % (morph1 or morph2)
+        yield u''
         return
     len1, len2 = len(morph1), len(morph2)
     if len1 != len2:
         longer, shorter = (morph1, morph2) if len1 > len2 else (morph2, morph1)
         if longer.endswith(shorter):
             # Longer morph ends with shorter morph.
-            yield u'(%s)%s' % (longer[:-len(shorter)], shorter)
+            for i in range(4):
+                yield u'(%s)%s' % (longer[:-len(shorter)], shorter)
+            yield u'%s' % longer
+            yield u'%s' % shorter
             return
     # Find common suffix between two morphs.
     for x, (let1, let2) in enumerate(zip(reversed(morph1), reversed(morph2))):
@@ -58,9 +66,11 @@ def generate_tolerances(morph1, morph2):
     else:
         # No similarity with each other.
         common_suffix = ''
-    for morph1, morph2 in [(morph1, morph2), (morph2, morph1)]:
-        yield u'%s(%s)%s' % (morph1, morph2, common_suffix)
-        yield u'(%s)%s%s' % (morph1, morph2, common_suffix)
+    for m1, m2 in [(morph1, morph2), (morph2, morph1)]:
+        yield u'%s(%s)%s' % (m1, m2, common_suffix)
+        yield u'(%s)%s%s' % (m1, m2, common_suffix)
+    yield u'%s%s' % (morph1, common_suffix)
+    yield u'%s%s' % (morph2, common_suffix)
 
 
 def parse_tolerance_style(style, registry=None):
@@ -79,7 +89,7 @@ def parse_tolerance_style(style, registry=None):
     if registry is None:
         from . import registry
     particle = registry.get(style)
-    if len(particle.tolerances) != 4:
+    if len(particle.tolerances) != 6:
         raise ValueError('Set tolerance style by general allomorphic particle')
     return particle.tolerances.index(style)
 

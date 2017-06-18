@@ -8,8 +8,8 @@ from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
 from tossi.tolerance import (
     generate_tolerances, get_tolerance, get_tolerance_from_iterator,
-    MORPH1_AND_OPTIONAL_MORPH2, OPTIONAL_MORPH2_AND_MORPH1,
-    parse_tolerance_style)
+    MORPH1_AND_OPTIONAL_MORPH2, MORPH1_ONLY, MORPH2_ONLY,
+    OPTIONAL_MORPH2_AND_MORPH1, parse_tolerance_style)
 
 
 Eun = get_particle(u'은')
@@ -67,19 +67,19 @@ def test_join_phonemes():
 
 def test_particle_tolerances():
     t = lambda _1, _2: set(generate_tolerances(_1, _2))
-    s = lambda x: set(x.split())
-    assert t(u'이', u'가') == s(u'이(가) (이)가 가(이) (가)이')
-    assert t(u'이', u'') == s(u'(이)')
-    assert t(u'으로', u'로') == s(u'(으)로')
-    assert t(u'이여', u'여') == s(u'(이)여')
-    assert t(u'이시여', u'시여') == s(u'(이)시여')
-    assert t(u'아', u'야') == s(u'아(야) (아)야 야(아) (야)아')
+    s = lambda x: set(x.split(' '))
+    assert t(u'이', u'가') == s(u'이(가) (이)가 가(이) (가)이 이 가')
+    assert t(u'이', u'') == s(u'(이) 이 ')
+    assert t(u'으로', u'로') == s(u'(으)로 으로 로')
+    assert t(u'이여', u'여') == s(u'(이)여 이여 여')
+    assert t(u'이시여', u'시여') == s(u'(이)시여 이시여 시여')
+    assert t(u'아', u'야') == s(u'아(야) (아)야 야(아) (야)아 아 야')
     assert \
         t(u'가나다', u'나나다') == \
-        s(u'가(나)나다 (가)나나다 나(가)나다 (나)가나다')
+        s(u'가(나)나다 (가)나나다 나(가)나다 (나)가나다 가나다 나나다')
     assert \
         t(u'가나다', u'마바사') == \
-        s(u'가나다(마바사) (가나다)마바사 마바사(가나다) (마바사)가나다')
+        s(u'가나다(마바사) (가나다)마바사 마바사(가나다) (마바사)가나다 가나다 마바사')
 
 
 def test_euro():
@@ -214,6 +214,8 @@ def test_tolerances():
     assert f(u'나오', u'(은)는') == u'나오는'
     assert f(u'나오', u'는(은)') == u'나오는'
     assert f(u'나오', u'(는)은') == u'나오는'
+    assert f(u'나오', u'은') == u'나오는'
+    assert f(u'나오', u'는') == u'나오는'
 
 
 def test_decimal():
@@ -330,12 +332,13 @@ def test_tolerance_style():
     assert parse_tolerance_style(0) == MORPH1_AND_OPTIONAL_MORPH2
     assert parse_tolerance_style(u'을(를)') == MORPH1_AND_OPTIONAL_MORPH2
     assert parse_tolerance_style(u'(를)을') == OPTIONAL_MORPH2_AND_MORPH1
-    with pytest.raises(ValueError):
-        parse_tolerance_style(u'과')
+    assert parse_tolerance_style(u'과') == MORPH1_ONLY
+    assert parse_tolerance_style(u'로') == MORPH2_ONLY
     with pytest.raises(ValueError):
         parse_tolerance_style(u'이다')
     with pytest.raises(ValueError):
-        parse_tolerance_style(u'(이)')
+        parse_tolerance_style(u'만')
+    parse_tolerance_style(u'(이)') == MORPH1_AND_OPTIONAL_MORPH2
     assert get_tolerance([u'예제'], OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
     assert get_tolerance_from_iterator(iter([u'예제']),
                                        OPTIONAL_MORPH2_AND_MORPH1) == u'예제'

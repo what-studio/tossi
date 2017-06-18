@@ -15,15 +15,15 @@ import warnings
 from .coda import guess_coda
 from .particles import Euro, Ida, Particle
 from .tolerance import (
-    MORPH1_AND_OPTIONAL_MORPH2, MORPH2_AND_OPTIONAL_MORPH1,
-    OPTIONAL_MORPH1_AND_MORPH2, OPTIONAL_MORPH2_AND_MORPH1,
+    MORPH1_AND_OPTIONAL_MORPH2, MORPH1_ONLY, MORPH2_AND_OPTIONAL_MORPH1,
+    MORPH2_ONLY, OPTIONAL_MORPH1_AND_MORPH2, OPTIONAL_MORPH2_AND_MORPH1,
     parse_tolerance_style)
 
 
 __all__ = ['get_particle', 'guess_coda', 'MORPH1_AND_OPTIONAL_MORPH2',
            'MORPH2_AND_OPTIONAL_MORPH1', 'OPTIONAL_MORPH1_AND_MORPH2',
-           'OPTIONAL_MORPH2_AND_MORPH1', 'parse_tolerance_style', 'Particle',
-           'postfix_particle']
+           'OPTIONAL_MORPH2_AND_MORPH1', 'MORPH1_ONLY', 'MORPH2_ONLY',
+           'parse_tolerance_style', 'Particle', 'postfix_particle']
 
 
 def index_particles(particles):
