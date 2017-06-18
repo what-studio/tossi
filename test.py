@@ -348,7 +348,7 @@ def test_tolerance_styles():
     # assert f(u'Tossi', u'였다', tolerance_style=MORPH2_ONLY) == u'Tossi였다'
 
 
-def test_given_tolerance_style():
+def test_static_tolerance_style():
     assert f(u'나오', u'을', tolerance_style=u'을/를') == u'나오를'
     assert f(u'키홀', u'를', tolerance_style=u'을/를') == u'키홀을'
     assert f(u'Tossi', u'을', tolerance_style=u'을/를') == u'Tossi을/를'
