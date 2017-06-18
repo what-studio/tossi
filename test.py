@@ -327,7 +327,7 @@ def test_igyuho2006():
     assert ff(u'이냐') == (u'남이냐', u'나냐')
 
 
-def test_tolerance_style():
+def test_tolerance_styles():
     assert Gwa[u'Hello'::OPTIONAL_MORPH2_AND_MORPH1] == u'(와)과'
     assert parse_tolerance_style(0) == MORPH1_AND_OPTIONAL_MORPH2
     assert parse_tolerance_style(u'을(를)') == MORPH1_AND_OPTIONAL_MORPH2
@@ -338,10 +338,14 @@ def test_tolerance_style():
         parse_tolerance_style(u'이다')
     with pytest.raises(ValueError):
         parse_tolerance_style(u'만')
-    parse_tolerance_style(u'(이)') == MORPH1_AND_OPTIONAL_MORPH2
+    assert parse_tolerance_style(u'(이)') == MORPH1_AND_OPTIONAL_MORPH2
     assert get_tolerance([u'예제'], OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
     assert get_tolerance_from_iterator(iter([u'예제']),
                                        OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
+    assert f(u'Tossi', u'이다', tolerance_style=MORPH1_ONLY) == u'Tossi이다'
+    assert f(u'Tossi', u'이다', tolerance_style=MORPH2_ONLY) == u'Tossi다'
+    assert f(u'Tossi', u'였다', tolerance_style=MORPH1_ONLY) == u'Tossi이었다'
+    # assert f(u'Tossi', u'였다', tolerance_style=MORPH2_ONLY) == u'Tossi였다'
 
 
 def test_given_tolerance_style():
