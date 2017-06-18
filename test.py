@@ -341,7 +341,7 @@ def test_tolerance_style():
                                        OPTIONAL_MORPH2_AND_MORPH1) == u'예제'
 
 
-def test_given_tolerance_style():
+def test_static_tolerance_style():
     assert f(u'나오', u'을', tolerance_style=u'을/를') == u'나오를'
     assert f(u'키홀', u'를', tolerance_style=u'을/를') == u'키홀을'
     assert f(u'Tossi', u'을', tolerance_style=u'을/를') == u'Tossi을/를'
