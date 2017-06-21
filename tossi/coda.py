@@ -18,7 +18,7 @@ from decimal import Decimal
 import re
 import unicodedata
 
-from .hangul import split_phonemes
+from tossi.hangul import split_phonemes
 
 
 __all__ = ['filter_only_significant', 'guess_coda',

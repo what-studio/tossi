@@ -12,9 +12,9 @@
 import re
 import warnings
 
-from .coda import guess_coda
-from .particles import Euro, Ida, Particle
-from .tolerance import (
+from tossi.coda import guess_coda
+from tossi.particles import Euro, Ida, Particle
+from tossi.tolerance import (
     MORPH1_AND_OPTIONAL_MORPH2, MORPH2_AND_OPTIONAL_MORPH1,
     OPTIONAL_MORPH1_AND_MORPH2, OPTIONAL_MORPH2_AND_MORPH1,
     parse_tolerance_style)

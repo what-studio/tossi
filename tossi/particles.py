@@ -15,12 +15,13 @@ import re
 from bidict import bidict
 from six import PY2, python_2_unicode_compatible, text_type, with_metaclass
 
-from .coda import guess_coda, pick_coda_from_letter
-from .hangul import combine_words, is_consonant, join_phonemes, split_phonemes
-from .tolerance import (
+from tossi.coda import guess_coda, pick_coda_from_letter
+from tossi.hangul import (
+    combine_words, is_consonant, join_phonemes, split_phonemes)
+from tossi.tolerance import (
     generate_tolerances, get_tolerance, get_tolerance_from_iterator,
     MORPH1_AND_OPTIONAL_MORPH2)
-from .utils import cached_property, CacheMeta
+from tossi.utils import cached_property, CacheMeta
 
 
 __all__ = ['DEFAULT_GUESS_CODA', 'DEFAULT_TOLERANCE_STYLE',
