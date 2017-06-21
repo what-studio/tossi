@@ -9,7 +9,7 @@
    This module implements :func:`guess_coda` and related functions to guess a
    coda from any words as correct as possible.
 
-   :copyright: (c) 2016 by What! Studio
+   :copyright: (c) 2016-2017 by What! Studio
    :license: BSD, see LICENSE for more details.
 
 """

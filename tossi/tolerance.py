@@ -5,7 +5,7 @@
 
    Utilities for tolerant particle morphs.
 
-   :copyright: (c) 2016 by What! Studio
+   :copyright: (c) 2016-2017 by What! Studio
    :license: BSD, see LICENSE for more details.
 
 """
