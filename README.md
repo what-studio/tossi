@@ -98,6 +98,65 @@ $ pip install tossi
 `은(는)`, `(은)는`, `는(은)`, `(는)은` 네 가지 스타일 중 프로젝트에 맞는 것을
 고르세요.
 
+## API
+
+### `tossi.pick(word, morph) -> str`
+
+`word`에 자연스럽게 뒤따르는 조사 형태를 구합니다.
+
+```python
+>>> tossi.pick(u'토씨', '은')
+는
+>>> tossi.pick(u'우리말', '은')
+은
+```
+
+### `tossi.postfix(word, morph) -> str`
+
+단어와 조사를 자연스럽게 연결합니다.
+
+```python
+>>> tossi.postfix(u'토씨', '은')
+토씨는
+>>> tossi.postfix(u'우리말', '은')
+우리말은
+```
+
+### `tossi.parse(morph) -> Particle`
+
+문자열로 된 조사 표기로부터 조사 객체를 얻습니다.
+
+```python
+>>> tossi.parse(u'으로')
+<Particle: u'(으)로'>
+>>> tossi.parse(u'(은)는')
+<Particle: u'은(는)'>
+>>> tossi.parse(u'이면')
+<Particle: u'(이)'>
+```
+
+### `Particle[word[:morph]] -> str`
+
+`word`에 뒤따르는 표기를 구합니다.
+
+```python
+>>> Eun = tossi.parse(u'은')
+>>> Eun[u'라면']
+은
+>>> Eun[u'라볶이']
+는
+```
+
+`morph`를 지정해서 어미에 변화를 줄 수 있습니다.
+
+```python
+>>> Euro = tossi.parse(u'으로')
+>>> Euro[u'라면':u'으론']
+으론
+>>> Euro[u'라볶이':u'으론']
+론
+```
+
 ## 만든이와 사용권
 
 [넥슨][nexon] [왓 스튜디오][what-studio]의 [이흥섭][sublee]과
