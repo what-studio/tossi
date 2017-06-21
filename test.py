@@ -2,7 +2,7 @@
 import pytest
 from six import PY2, text_type as str, with_metaclass
 
-from tossi import get_particle, postfix_particle as f, registry
+from tossi import get_particle, pick_particle, postfix_particle as f, registry
 from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
@@ -345,6 +345,14 @@ def test_static_tolerance_style():
     assert f(u'나오', u'을', tolerance_style=u'을/를') == u'나오를'
     assert f(u'키홀', u'를', tolerance_style=u'을/를') == u'키홀을'
     assert f(u'Tossi', u'을', tolerance_style=u'을/를') == u'Tossi을/를'
+
+
+def test_pick_particle():
+    assert pick_particle(u'나오', u'을') == u'를'
+    assert pick_particle(u'키홀', u'를') == u'을'
+    assert pick_particle(u'Tossi', u'을') == u'(을)를'
+    assert pick_particle(u'Tossi', u'을', tolerance_style=u'을/를') == u'을/를'
+    assert pick_particle(u'남', u'면서') == u'이면서'
 
 
 def test_custom_guess_coda():
