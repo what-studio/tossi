@@ -23,7 +23,7 @@ from tossi.tolerance import (
 __all__ = ['get_particle', 'guess_coda', 'MORPH1_AND_OPTIONAL_MORPH2',
            'MORPH2_AND_OPTIONAL_MORPH1', 'OPTIONAL_MORPH1_AND_MORPH2',
            'OPTIONAL_MORPH2_AND_MORPH1', 'parse_tolerance_style', 'Particle',
-           'postfix_particle']
+           'pick_particle', 'postfix_particle']
 
 
 def index_particles(particles):
@@ -59,9 +59,12 @@ class ParticleRegistry(object):
             return self.default
         return self._get_by_match(m)
 
-    def postfix(self, word, morph, **kwargs):
+    def pick(self, word, morph, **kwargs):
         particle = self.get(morph)
-        return word + particle.allomorph(word, morph, **kwargs)
+        return particle.allomorph(word, morph, **kwargs)
+
+    def postfix(self, word, morph, **kwargs):
+        return word + self.pick(word, morph, **kwargs)
 
     def postfix_particle(self, word, morph, **kwargs):
         warnings.warn(DeprecationWarning('Use postfix() instead'))
@@ -107,8 +110,13 @@ def get_particle(morph):
     return registry.get(morph)
 
 
+def pick_particle(word, morph, **kwargs):
+    """Shortcut for :class:`ParticleRegistry.pick` of the default registry.
+    """
+    return registry.pick(word, morph, **kwargs)
+
+
 def postfix_particle(word, morph, **kwargs):
-    """Shortcut for :class:`ParticleRegistry.postfix_particle` of the default
-    registry.
+    """Shortcut for :class:`ParticleRegistry.postfix` of the default registry.
     """
     return registry.postfix(word, morph, **kwargs)

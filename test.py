@@ -350,9 +350,9 @@ def test_static_tolerance_style():
 def test_pick_particle():
     assert pick_particle(u'나오', u'을') == u'를'
     assert pick_particle(u'키홀', u'를') == u'을'
-    assert pick_particle(u'Tossi', u'을') == u'(을)를'
-    assert pick_particle(u'Tossi', u'을', tolerance_style=u'을/를') == u'을/를'
     assert pick_particle(u'남', u'면서') == u'이면서'
+    assert pick_particle(u'Tossi', u'을') == u'을(를)'
+    assert pick_particle(u'Tossi', u'을', tolerance_style=u'을/를') == u'을/를'
 
 
 def test_custom_guess_coda():
