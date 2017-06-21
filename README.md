@@ -23,13 +23,13 @@ $ pip install tossi
 
 ```python
 >>> import tossi
->>> tossi.postfix_particle(u'집', u'(으)로')
+>>> tossi.postfix(u'집', u'(으)로')
 집으로
->>> tossi.postfix_particle(u'말', u'으로는')
+>>> tossi.postfix(u'말', u'으로는')
 말로는
->>> tossi.postfix_particle(u'대한민국', u'은(는)')
+>>> tossi.postfix(u'대한민국', u'은(는)')
 대한민국은
->>> tossi.postfix_particle(u'민주공화국', u'다')
+>>> tossi.postfix(u'민주공화국', u'다')
 민주공화국이다
 ```
 
@@ -59,27 +59,27 @@ $ pip install tossi
 알 수 없을 때에는 `은(는)`, `(으)로`처럼 모든 형태를 병기합니다:
 
 ```python
->>> tossi.postfix_particle(u'벽돌', u'으로')
+>>> tossi.postfix(u'벽돌', u'으로')
 벽돌로
->>> tossi.postfix_particle(u'짚', u'으로')
+>>> tossi.postfix(u'짚', u'으로')
 짚으로
->>> tossi.postfix_particle(u'黃金', u'으로')
+>>> tossi.postfix(u'黃金', u'으로')
 黃金(으)로
 ```
 
 단어가 숫자로 끝나더라도 자연스러운 조사 형태가 선택됩니다:
 
 ```python
->>> tossi.postfix_particle(u'레벨 10', u'이')
+>>> tossi.postfix(u'레벨 10', u'이')
 레벨 10이
->>> tossi.postfix_particle(u'레벨 999', u'이')
+>>> tossi.postfix(u'레벨 999', u'이')
 레벨 999가
 ```
 
 괄호 속 단어나 구두점은 조사 형태를 선택할 때 참고하지 않습니다:
 
 ```python
->>> tossi.postfix_particle(u'나뭇가지(만렙)', u'을')
+>>> tossi.postfix(u'나뭇가지(만렙)', u'을')
 나뭇가지(만렙)를
 ```
 
@@ -91,7 +91,7 @@ $ pip install tossi
 
 ```python
 >>> tolerance_style = tossi.parse_tolerance_style(u'는(은)')
->>> tossi.postfix_particle(u'さくら', u'이', tolerance_style=tolerance_style)
+>>> tossi.postfix(u'さくら', u'이', tolerance_style=tolerance_style)
 さくら가(이)
 ```
 
