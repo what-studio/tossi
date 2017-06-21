@@ -22,8 +22,8 @@ from tossi.tolerance import (
 
 __all__ = ['get_particle', 'guess_coda', 'MORPH1_AND_OPTIONAL_MORPH2',
            'MORPH2_AND_OPTIONAL_MORPH1', 'OPTIONAL_MORPH1_AND_MORPH2',
-           'OPTIONAL_MORPH2_AND_MORPH1', 'parse_tolerance_style', 'Particle',
-           'pick_particle', 'postfix_particle']
+           'OPTIONAL_MORPH2_AND_MORPH1', 'parse', 'parse_tolerance_style',
+           'Particle', 'pick', 'postfix', 'postfix_particle']
 
 
 def index_particles(particles):
