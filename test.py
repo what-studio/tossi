@@ -2,7 +2,8 @@
 import pytest
 from six import PY2, text_type as str, with_metaclass
 
-from tossi import get_particle, pick_particle, postfix_particle as f, registry
+import tossi
+from tossi import postfix as f, registry
 from tossi.coda import pick_coda_from_decimal
 from tossi.hangul import join_phonemes, split_phonemes
 from tossi.particles import Euro, Ida, Particle, SingletonParticleMeta
@@ -12,9 +13,9 @@ from tossi.tolerance import (
     parse_tolerance_style)
 
 
-Eun = get_particle(u'은')
-Eul = get_particle(u'을')
-Gwa = get_particle(u'과')
+Eun = tossi.parse(u'은')
+Eul = tossi.parse(u'을')
+Gwa = tossi.parse(u'과')
 
 
 def test_about():
@@ -37,11 +38,11 @@ def test_particle():
 
 
 def test_frontend():
-    assert get_particle(u'을') is Eul
-    assert get_particle(u'를') is Eul
-    assert get_particle(u'을(를)') is Eul
-    assert get_particle(u'이다') is Ida
-    assert get_particle(u'이었다') is Ida
+    assert tossi.parse(u'을') is Eul
+    assert tossi.parse(u'를') is Eul
+    assert tossi.parse(u'을(를)') is Eul
+    assert tossi.parse(u'이다') is Ida
+    assert tossi.parse(u'이었다') is Ida
 
 
 def test_split_phonemes():
@@ -347,12 +348,12 @@ def test_static_tolerance_style():
     assert f(u'Tossi', u'을', tolerance_style=u'을/를') == u'Tossi을/를'
 
 
-def test_pick_particle():
-    assert pick_particle(u'나오', u'을') == u'를'
-    assert pick_particle(u'키홀', u'를') == u'을'
-    assert pick_particle(u'남', u'면서') == u'이면서'
-    assert pick_particle(u'Tossi', u'을') == u'을(를)'
-    assert pick_particle(u'Tossi', u'을', tolerance_style=u'을/를') == u'을/를'
+def test_pick():
+    assert tossi.pick(u'나오', u'을') == u'를'
+    assert tossi.pick(u'키홀', u'를') == u'을'
+    assert tossi.pick(u'남', u'면서') == u'이면서'
+    assert tossi.pick(u'Tossi', u'을') == u'을(를)'
+    assert tossi.pick(u'Tossi', u'을', tolerance_style=u'을/를') == u'을/를'
 
 
 def test_custom_guess_coda():
@@ -374,3 +375,5 @@ def test_singleton_error():
 
 def test_deprecations():
     pytest.deprecated_call(registry.postfix_particle, u'테스트', u'으로부터')
+    pytest.deprecated_call(tossi.postfix_particle, u'테스트', u'으로부터')
+    pytest.deprecated_call(tossi.get_particle, u'으로부터')

@@ -53,7 +53,7 @@ class ParticleRegistry(object):
         x = self.indices[match.lastgroup]
         return self.particles[x]
 
-    def get(self, morph):
+    def parse(self, morph):
         m = self.pattern.match(morph)
         if m is None:
             return self.default
@@ -65,6 +65,10 @@ class ParticleRegistry(object):
 
     def postfix(self, word, morph, **kwargs):
         return word + self.pick(word, morph, **kwargs)
+
+    def get(self, morph):
+        warnings.warn(DeprecationWarning('Use parse() instead'))
+        return self.parse(morph)
 
     def postfix_particle(self, word, morph, **kwargs):
         warnings.warn(DeprecationWarning('Use postfix() instead'))
@@ -105,18 +109,28 @@ registry = ParticleRegistry(Ida, [
 ])
 
 
-def get_particle(morph):
-    """Shortcut for :class:`ParticleRegistry.get` of the default registry."""
-    return registry.get(morph)
+def parse(morph):
+    """Shortcut for :class:`ParticleRegistry.parse` of the default registry."""
+    return registry.parse(morph)
 
 
-def pick_particle(word, morph, **kwargs):
+def pick(word, morph, **kwargs):
     """Shortcut for :class:`ParticleRegistry.pick` of the default registry.
     """
     return registry.pick(word, morph, **kwargs)
 
 
-def postfix_particle(word, morph, **kwargs):
+def postfix(word, morph, **kwargs):
     """Shortcut for :class:`ParticleRegistry.postfix` of the default registry.
     """
     return registry.postfix(word, morph, **kwargs)
+
+
+def get_particle(morph):
+    warnings.warn(DeprecationWarning('Use parse() instead'))
+    return parse(morph)
+
+
+def postfix_particle(word, morph, **kwargs):
+    warnings.warn(DeprecationWarning('Use postfix() instead'))
+    return postfix(word, morph, **kwargs)
