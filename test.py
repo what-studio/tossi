@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import functools
+
 import pytest
 from six import PY2, text_type as str, with_metaclass
 
@@ -365,6 +367,15 @@ def test_custom_guess_coda():
 
 def test_unmatch():
     assert Eul[u'예제':u'는'] is None
+
+
+def test_formatter():
+    t = u'{0:으로} {0:을}'
+    f1 = functools.partial(tossi.Formatter(registry).format, t)
+    f2 = functools.partial(tossi.format, t)
+    assert f1(u'나오') == f2(u'나오') == u'나오로 나오를'
+    assert f1(u'키홀') == f2(u'키홀') == u'키홀로 키홀을'
+    assert f1(u'모리안') == f2(u'모리안') == u'모리안으로 모리안을'
 
 
 def test_singleton_error():

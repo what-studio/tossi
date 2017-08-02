@@ -13,6 +13,7 @@ import re
 import warnings
 
 from tossi.coda import guess_coda
+from tossi.formatter import Formatter
 from tossi.particles import Euro, Ida, Particle
 from tossi.tolerance import (
     MORPH1_AND_OPTIONAL_MORPH2, MORPH2_AND_OPTIONAL_MORPH1,
@@ -23,7 +24,8 @@ from tossi.tolerance import (
 __all__ = ['get_particle', 'guess_coda', 'MORPH1_AND_OPTIONAL_MORPH2',
            'MORPH2_AND_OPTIONAL_MORPH1', 'OPTIONAL_MORPH1_AND_MORPH2',
            'OPTIONAL_MORPH2_AND_MORPH1', 'parse', 'parse_tolerance_style',
-           'Particle', 'pick', 'postfix', 'postfix_particle']
+           'Particle', 'pick', 'postfix', 'postfix_particle',
+           'Formatter', 'format']
 
 
 def index_particles(particles):
@@ -107,6 +109,7 @@ registry = ParticleRegistry(Ida, [
     # Special particles:
     Euro,
 ])
+formatter = Formatter(registry)
 
 
 def parse(morph):
@@ -134,3 +137,9 @@ def get_particle(morph):
 def postfix_particle(word, morph, **kwargs):
     warnings.warn(DeprecationWarning('Use postfix() instead'))
     return postfix(word, morph, **kwargs)
+
+
+def format(message, *args, **kwargs):
+    """Shortcut for :class:`tossi.Formatter.format` of the default registry.
+    """
+    return formatter.vformat(message, args, kwargs)
