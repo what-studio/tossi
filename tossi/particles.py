@@ -229,7 +229,7 @@ class Euro(singleton_particle(Particle)):
 
 
 class Ida(singleton_particle(Particle)):
-    """"이다" is a verbal prticle.  Like other Korean verbs, it is also
+    """"이다" is a verbal particle.  Like other Korean verbs, it is also
     fusional.
     """
 
