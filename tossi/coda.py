@@ -71,15 +71,15 @@ def filter_only_significant(word):
     x = len(word)
     while x > 0:
         x -= 1
-        l = word[x]
+        c = word[x]
         # Skip a complete parenthesis.
-        if l == u')':
+        if c == u')':
             m = INSIGNIFICANT_PARENTHESIS_PATTERN.search(word[:x + 1])
             if m is not None:
                 x = m.start()
             continue
         # Skip unreadable characters such as punctuations.
-        unicode_category = unicodedata.category(l)
+        unicode_category = unicodedata.category(c)
         if not SIGNIFICANT_UNICODE_CATEGORY_PATTERN.match(unicode_category):
             continue
         break

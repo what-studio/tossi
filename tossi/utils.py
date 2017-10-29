@@ -19,7 +19,7 @@ def cached_property(f):
     """Similar to `@property` but it calls the function just once and caches
     the result.  The object has to can have ``__cache__`` attribute.
 
-    If you define `__slots__` for optimization, the metaclass should bea
+    If you define `__slots__` for optimization, the metaclass should be a
     :class:`CacheMeta`.
 
     """
