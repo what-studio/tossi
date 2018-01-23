@@ -62,7 +62,7 @@ class ParticleRegistry(object):
         return self._get_by_match(m)
 
     def pick(self, word, morph, **kwargs):
-        particle = self.get(morph)
+        particle = self.parse(morph)
         return particle.allomorph(word, morph, **kwargs)
 
     def postfix(self, word, morph, **kwargs):
