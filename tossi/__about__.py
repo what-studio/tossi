@@ -3,7 +3,7 @@
    tossi.__about__
    ~~~~~~~~~~~~~~~
 """
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 __license__ = 'BSD'
 __author__ = 'What! Studio'
 __maintainer__ = 'Heungsub Lee'
