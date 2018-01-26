@@ -378,6 +378,10 @@ def test_formatter():
     assert f1(u'모리안') == f2(u'모리안') == u'모리안으로 모리안을'
 
 
+def test_formatter_without_korean():
+    assert tossi.format('{0}', u'Tossi') == u'Tossi'
+
+
 def test_singleton_error():
     with pytest.raises(TypeError):
         class Fail(with_metaclass(SingletonParticleMeta, object)):
